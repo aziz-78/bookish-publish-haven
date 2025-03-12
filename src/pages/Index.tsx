@@ -1,12 +1,50 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect } from "react";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import FeaturedBooks from "@/components/FeaturedBooks";
+import AuthorSpotlight from "@/components/AuthorSpotlight";
+import PublishingServices from "@/components/PublishingServices";
+import SubmissionForm from "@/components/SubmissionForm";
+import Footer from "@/components/Footer";
 
 const Index = () => {
+  // Smooth scroll to anchor links
+  useEffect(() => {
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const isAnchor = target.tagName === 'A' && target.getAttribute('href')?.startsWith('#');
+      
+      if (isAnchor) {
+        e.preventDefault();
+        const id = target.getAttribute('href')?.substring(1);
+        if (id) {
+          const element = document.getElementById(id);
+          if (element) {
+            window.scrollTo({
+              top: element.offsetTop - 80, // Offset for fixed header
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+    return () => document.removeEventListener('click', handleAnchorClick);
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="page-transition min-h-screen flex flex-col w-full">
+      <Navbar />
+      <main>
+        <Hero />
+        <FeaturedBooks />
+        <AuthorSpotlight />
+        <PublishingServices />
+        <SubmissionForm />
+      </main>
+      <Footer />
     </div>
   );
 };
